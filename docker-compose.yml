@@ -1,0 +1,10 @@
+version: '3'
+services:
+  codegen:
+    image: swagger-code-generator-node-typescript
+    build:
+      context: .
+    volumes:
+      - ./output:/swagger-output
+      - ./definition:/swagger-input:ro
+    command: ["--additional-properties=supportsES6=true", "-i", "/swagger-input/swagger.yaml", "-o", "/swagger-output"]
