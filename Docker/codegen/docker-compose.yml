@@ -3,11 +3,11 @@ services:
   codegen:
     image: swaggerapi/swagger-codegen-cli:2.4.8
     volumes:
-      - ../../target:/talanx-code-gen
+      - ../../target:/code-gen
       - ../../output:/swagger-output
       - ../../definition:/swagger-input
     entrypoint: java
-    command: "-cp /talanx-code-gen/talanx-swagger-codegen-1.0.0.jar:/opt/swagger-codegen-cli/swagger-codegen-cli.jar \
+    command: "-cp /code-gen/swagger-code-generator-node-typescript-1.0.0.jar:/opt/swagger-codegen-cli/swagger-codegen-cli.jar \
       io.swagger.codegen.SwaggerCodegen generate \
       -l node-typescript \
       --additional-properties=supportsES6=true

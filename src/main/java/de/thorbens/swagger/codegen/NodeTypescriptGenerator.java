@@ -1,4 +1,4 @@
-package de.arithnea.talanx.codegen;
+package de.thorbens.swagger.codegen;
 
 import io.swagger.codegen.languages.TypeScriptNodeClientCodegen;
 
