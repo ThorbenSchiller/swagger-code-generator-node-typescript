@@ -304,27 +304,31 @@ export class {{classname}} {
 {{/authMethods}}
     }
 
-    constructor(basePath?: string);
-{{#authMethods}}
-{{#isBasic}}
-    constructor(username: string, password: string, basePath?: string);
-{{/isBasic}}
-{{/authMethods}}
-    constructor(basePathOrUsername: string, password?: string, basePath?: string) {
-        if (password) {
-{{#authMethods}}
-{{#isBasic}}
-            this.username = basePathOrUsername;
-            this.password = password
-{{/isBasic}}
-{{/authMethods}}
-            if (basePath) {
-                this.basePath = basePath;
-            }
-        } else {
-            if (basePathOrUsername) {
-                this.basePath = basePathOrUsername
-            }
+    constructor({
+        basePath,
+        {{#authMethods}}
+        {{#isBasic}}
+        username,
+        password,
+        {{/isBasic}}
+        {{/authMethods}}
+    }: {
+        basePath?: string,
+        {{#authMethods}}
+        {{#isBasic}}
+        username?: string,
+        password?: string
+        {{/isBasic}}
+        {{/authMethods}}
+    }) {
+        {{#authMethods}}
+        {{#isBasic}}
+        this.username = username;
+        this.password = password;
+        {{/isBasic}}
+        {{/authMethods}}
+        if (basePath) {
+            this.basePath = basePath;
         }
     }
 
@@ -341,7 +345,7 @@ export class {{classname}} {
     }
 
     public setDefaultAuthentication(auth: Authentication) {
-	this.authentications.default = auth;
+	    this.authentications.default = auth;
     }
 
     public setApiKey(key: {{classname}}ApiKeys, value: string) {
