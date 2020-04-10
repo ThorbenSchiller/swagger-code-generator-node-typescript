@@ -1,0 +1,32 @@
+// tslint:disable
+{{>licenseInfo}}
+import {RequestInit} from "node-fetch";
+
+export interface Configuration {
+    /**
+     * parameter for apiKey security
+     *
+     * @param name security name
+     */
+    apiKey?: string | ((name: string) => string);
+    /**
+     * parameter for basic security
+     */
+    username?: string;
+    /**
+     * parameter for basic security
+     */
+    password?: string;
+    /**
+     * parameter for oauth2 security
+     *
+     * @param name security name
+     * @param scopes oauth2 scope
+     */
+    accessToken?: string | ((name: string, scopes?: string[]) => string);
+    /**
+     * override base path
+     */
+    basePath?: string;
+    fetchOptions?: RequestInit;
+}

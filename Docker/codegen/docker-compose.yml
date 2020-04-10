@@ -1,7 +1,7 @@
 version: '3'
 services:
   codegen:
-    image: swaggerapi/swagger-codegen-cli:2.4.8
+    image: swaggerapi/swagger-codegen-cli:2.4.13
     volumes:
       - ../../target:/code-gen
       - ../../output:/swagger-output

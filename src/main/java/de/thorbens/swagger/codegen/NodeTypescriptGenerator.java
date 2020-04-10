@@ -1,11 +1,11 @@
 package de.thorbens.swagger.codegen;
 
-import io.swagger.codegen.languages.TypeScriptNodeClientCodegen;
+import io.swagger.codegen.languages.TypeScriptFetchClientCodegen;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class NodeTypescriptGenerator extends TypeScriptNodeClientCodegen {
+public class NodeTypescriptGenerator extends TypeScriptFetchClientCodegen {
     public NodeTypescriptGenerator() {
         super();
 
@@ -21,7 +21,7 @@ public class NodeTypescriptGenerator extends TypeScriptNodeClientCodegen {
     public void processOpts() {
         super.processOpts();
         // remove unused files
-        final List<String> removeFiles = Arrays.asList("git_push.sh.mustache", "gitignore");
+        final List<String> removeFiles = Arrays.asList("git_push.sh.mustache", "gitignore", "custom.d.mustache");
         this.supportingFiles.removeIf(file -> removeFiles.contains(file.templateFile));
     }
 
