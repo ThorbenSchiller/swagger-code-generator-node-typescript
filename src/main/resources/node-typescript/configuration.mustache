@@ -8,7 +8,7 @@ export interface Configuration {
      *
      * @param name security name
      */
-    apiKey?: string | ((name: string) => string);
+    apiKey?: string | ((name: string) => Promise<string>);
     /**
      * parameter for basic security
      */
@@ -23,7 +23,7 @@ export interface Configuration {
      * @param name security name
      * @param scopes oauth2 scope
      */
-    accessToken?: string | ((name: string, scopes?: string[]) => string);
+    accessToken?: string | ((name: string, scopes?: string[]) => Promise<string>);
     /**
      * override base path
      */
