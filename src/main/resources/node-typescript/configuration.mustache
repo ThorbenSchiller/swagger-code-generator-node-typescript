@@ -23,7 +23,7 @@ export interface Configuration {
      * @param name security name
      * @param scopes oauth2 scope
      */
-    accessToken?: string | ((name: string, scopes?: string[]) => Promise<string>);
+    accessToken?: string | ((name: string, scopes?: ReadonlyArray<string>) => Promise<string>);
     /**
      * override base path
      */
