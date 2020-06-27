@@ -134,7 +134,7 @@ export class {{classname}} extends BaseAPI {
             --}}{{/isCollectionFormatMulti}}{{!--
             --}}{{^isCollectionFormatMulti}}
             localVarHeaderParameter.{{paramName}} = params.{{paramName}}.join(COLLECTION_FORMATS["{{collectionFormat}}"]);{{!--
-            --}}{{/isCollectionFormatMulti}}
+            --}}{{/isCollectionFormatMulti}}{{!--
         --}}{{/isListContainer}}{{!--
         --}}{{^isListContainer}}{{!--
             --}}{{#isDateTime}}
@@ -158,7 +158,7 @@ export class {{classname}} extends BaseAPI {
             --}}{{/isCollectionFormatMulti}}{{!--
             --}}{{^isCollectionFormatMulti}}
             localVarQueryParameter.{{paramName}} = params.{{paramName}}.join(COLLECTION_FORMATS["{{collectionFormat}}"]);{{!--
-            --}}{{/isCollectionFormatMulti}}
+            --}}{{/isCollectionFormatMulti}}{{!--
         --}}{{/isListContainer}}{{!--
         --}}{{^isListContainer}}{{!--
             --}}{{#isDateTime}}
