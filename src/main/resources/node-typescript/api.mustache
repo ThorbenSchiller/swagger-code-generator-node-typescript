@@ -119,6 +119,8 @@ export class {{classname}} extends BaseAPI {
         const localVarPath = "{{{path}}}"{{#pathParams}}
             .replace({{=<% %>=}}"{<% baseName %>}"<%={{ }}=%>, encodeURIComponent(params.{{paramName}}.toString())){{/pathParams}};
         const localVarUrlObj = Url.parse(localVarPath, true);
+        // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+        localVarUrlObj.search = null;
         const localVarRequestOptions: RequestInit = {
             ...(configuration.fetchOptions || {}),
             ...requestOptions,
@@ -239,8 +241,6 @@ export class {{classname}} extends BaseAPI {
             ...localVarUrlObj.query,
             ...localVarQueryParameter,
         };
-        // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-        delete localVarUrlObj.search;
         localVarRequestOptions.headers = {
             ...localVarHeaderParameter,
             ...requestOptions.headers,
