@@ -1,8 +1,8 @@
 // tslint:disable
 /* eslint-disable */
 {{>licenseInfo}}
-import Url from "url";
-import fetch, {Response, RequestInit} from "node-fetch";
+import { RESTDataSource } from "apollo-datasource-rest";
+import { RequestInit } from "apollo-server-env";
 import { Configuration } from "./configuration";
 
 const BASE_PATH = "{{{basePath}}}".replace(/\/+$/, "");
@@ -14,13 +14,13 @@ export const COLLECTION_FORMATS = {
     pipes: "|",
 };
 
-class BaseAPI {
+class BaseAPI extends RESTDataSource {
     protected readonly configuration: Configuration;
-    protected readonly basePath: string;
 
     public constructor(configuration: Configuration = {}, basePath: string = BASE_PATH) {
+        super();
         this.configuration = configuration;
-        this.basePath = configuration.basePath ?? basePath;
+        this.baseURL = configuration.basePath ?? basePath;
     }
 
     protected getApiKeyFromConfiguration(paramName: string): Promise<string> {
@@ -31,15 +31,6 @@ class BaseAPI {
     protected getAccessTokenFromConfiguration(name: string, scopes: ReadonlyArray<string>): Promise<string> {
         return typeof this.configuration.accessToken === 'function' ?
             this.configuration.accessToken(name, scopes) : Promise.resolve(this.configuration.accessToken!);
-    }
-
-    protected async performRequest<T>(url: string, options: RequestInit, returnJson?: boolean): Promise<T> {
-        const response = await fetch(url, options);
-        if (response.status >= 200 && response.status < 300) {
-            return returnJson ? response.json() : response.text();
-        }
-
-        throw response;
     }
 }
 
@@ -55,7 +46,7 @@ function serialize(data: unknown, contentType?: string): string {
 }
 
 /**
- * Verfies that the given parameter is not null or undefined.
+ * Verifies that the given parameter is not null or undefined.
  *
  * @param parameters The parameters to check.
  * @param requiredParameters The list of required parameters.
@@ -118,13 +109,9 @@ export class {{classname}} extends BaseAPI {
         const configuration = this.configuration;
         const localVarPath = "{{{path}}}"{{#pathParams}}
             .replace({{=<% %>=}}"{<% baseName %>}"<%={{ }}=%>, encodeURIComponent(params.{{paramName}}.toString())){{/pathParams}};
-        const localVarUrlObj = Url.parse(localVarPath, true);
-        // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-        localVarUrlObj.search = null;
         const localVarRequestOptions: RequestInit = {
             ...(configuration.fetchOptions || {}),
             ...requestOptions,
-            method: '{{httpMethod}}'
         };
         const localVarHeaderParameter: Record<string, string> = {};
         {{#headerParams}}{{!--
@@ -237,10 +224,6 @@ export class {{classname}} extends BaseAPI {
         const contentType = '{{^consumes}}application/json{{/consumes}}{{#consumes.0}}{{{mediaType}}}{{/consumes.0}}';
         localVarHeaderParameter['Content-Type'] = contentType;
         {{/bodyParam}}
-        localVarUrlObj.query = {
-            ...localVarUrlObj.query,
-            ...localVarQueryParameter,
-        };
         localVarRequestOptions.headers = {
             ...localVarHeaderParameter,
             ...requestOptions.headers,
@@ -252,10 +235,10 @@ export class {{classname}} extends BaseAPI {
             localVarRequestOptions.body = serialize(params.{{paramName}} || "", contentType);
         {{/bodyParam}}
 
-        return this.performRequest(
-            this.configuration.basePath + Url.format(localVarUrlObj),
+        return this.{{httpMethod}}(
+           localVarPath,
+            localVarQueryParameter,
             localVarRequestOptions,
-            {{#returnType}}true{{/returnType}}{{^returnType}}false{{/returnType}},
         );
     }
     {{/operation}}
